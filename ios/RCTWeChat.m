@@ -284,6 +284,22 @@ RCT_EXPORT_METHOD(pay:(NSDictionary *)data
                                      ThumbImage:aThumbImage
                                        MediaTag:mediaTagName
                                        callBack:callback];
+        } else if ([type isEqualToString:RCTWXShareTypeMiniProgram]) {
+            WXMiniProgramObject *miniProgramObject = [WXMiniProgramObject object];
+            miniProgramObject.webpageUrl = aData[@"webpageUrl"];
+            miniProgramObject.userName = aData[@"userName"];
+            miniProgramObject.path = aData[@"path"];
+            miniProgramObject.hdImageData = aThumbImage;
+
+            [self shareToWeixinWithMediaMessage:aScene
+                                          Title:title
+                                    Description:description
+                                         Object:miniProgramObject
+                                     MessageExt:messageExt
+                                  MessageAction:messageAction
+                                     ThumbImage:aThumbImage
+                                       MediaTag:mediaTagName
+                                       callBack:callback];
 
         } else {
             callback(@[@"message type unsupported"]);
