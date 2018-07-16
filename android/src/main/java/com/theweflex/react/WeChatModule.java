@@ -326,6 +326,8 @@ public class WeChatModule extends ReactContextBaseJavaModule implements IWXAPIEv
             mediaObject = __jsonToMusicMedia(data);
         } else if (type.equals("file")) {
             mediaObject = __jsonToFileMedia(data);
+        } else if (type.equals("miniprogram")) {
+            mediaObject = __jsonToMiniProgramMedia(data);
         }
 
         if (mediaObject == null) {
@@ -462,6 +464,18 @@ public class WeChatModule extends ReactContextBaseJavaModule implements IWXAPIEv
             return null;
         }
         return new WXFileObject(data.getString("filePath"));
+    }
+
+    private WXMiniProgramObject __jsonToMiniProgramMedia(ReadableMap data) {
+//        if (!data.hasKey("filePath")) {
+//            return null;
+//        }
+        WXMiniProgramObject miniProgramObj = new WXMiniProgramObject();
+        miniProgramObj.webpageUrl = data.getString("webpageUrl"); // 兼容低版本的网页链接
+        miniProgramObj.miniprogramType = WXMiniProgramObject.MINIPTOGRAM_TYPE_RELEASE;// 正式版:0，测试版:1，体验版:2
+        miniProgramObj.userName = data.getString("userName");     // 小程序原始id
+        miniProgramObj.path = data.getString("path");            //小程序页面路径
+        return miniProgramObj;
     }
 
     // TODO: 实现sendRequest、sendSuccessResponse、sendErrorCommonResponse、sendErrorUserCancelResponse
