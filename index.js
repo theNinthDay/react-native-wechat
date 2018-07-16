@@ -4,7 +4,7 @@ import { DeviceEventEmitter, NativeModules, Platform } from 'react-native';
 import { EventEmitter } from 'events';
 
 let isAppRegistered = false;
-const { WeChat } = NativeModules;
+const { RCTWeChat } = NativeModules;
 
 // Event emitter to dispatch request and response from WeChat.
 const emitter = new EventEmitter();
@@ -93,7 +93,7 @@ export const removeAllListeners = emitter.removeAllListeners.bind(emitter);
  * @param {String} appid - the app id
  * @return {Promise}
  */
-export const registerApp = wrapRegisterApp(WeChat.registerApp);
+export const registerApp = wrapRegisterApp(RCTWeChat.registerApp);
 
 /**
  * @method registerAppWithDescription
@@ -102,7 +102,7 @@ export const registerApp = wrapRegisterApp(WeChat.registerApp);
  * @return {Promise}
  */
 export const registerAppWithDescription = wrapRegisterApp(
-  WeChat.registerAppWithDescription,
+  RCTWeChat.registerAppWithDescription,
 );
 
 /**
@@ -110,41 +110,41 @@ export const registerAppWithDescription = wrapRegisterApp(
  * @method isWXAppInstalled
  * @return {Promise}
  */
-export const isWXAppInstalled = wrapApi(WeChat.isWXAppInstalled);
+export const isWXAppInstalled = wrapApi(RCTWeChat.isWXAppInstalled);
 
 /**
  * Return if the wechat application supports the api
  * @method isWXAppSupportApi
  * @return {Promise}
  */
-export const isWXAppSupportApi = wrapApi(WeChat.isWXAppSupportApi);
+export const isWXAppSupportApi = wrapApi(RCTWeChat.isWXAppSupportApi);
 
 /**
  * Get the wechat app installed url
  * @method getWXAppInstallUrl
  * @return {String} the wechat app installed url
  */
-export const getWXAppInstallUrl = wrapApi(WeChat.getWXAppInstallUrl);
+export const getWXAppInstallUrl = wrapApi(RCTWeChat.getWXAppInstallUrl);
 
 /**
  * Get the wechat api version
  * @method getApiVersion
  * @return {String} the api version string
  */
-export const getApiVersion = wrapApi(WeChat.getApiVersion);
+export const getApiVersion = wrapApi(RCTWeChat.getApiVersion);
 
 /**
  * Open wechat app
  * @method openWXApp
  * @return {Promise}
  */
-export const openWXApp = wrapApi(WeChat.openWXApp);
+export const openWXApp = wrapApi(RCTWeChat.openWXApp);
 
 // wrap the APIs
-const nativeShareToTimeline = wrapApi(WeChat.shareToTimeline);
-const nativeShareToSession = wrapApi(WeChat.shareToSession);
-const nativeShareToFavorite = wrapApi(WeChat.shareToFavorite);
-const nativeSendAuthRequest = wrapApi(WeChat.sendAuthRequest);
+const nativeShareToTimeline = wrapApi(RCTWeChat.shareToTimeline);
+const nativeShareToSession = wrapApi(RCTWeChat.shareToSession);
+const nativeShareToFavorite = wrapApi(RCTWeChat.shareToFavorite);
+const nativeSendAuthRequest = wrapApi(RCTWeChat.sendAuthRequest);
 
 /**
  * @method sendAuthRequest
@@ -153,7 +153,7 @@ const nativeSendAuthRequest = wrapApi(WeChat.sendAuthRequest);
  */
 export function sendAuthRequest(scopes, state) {
   return new Promise((resolve, reject) => {
-    WeChat.sendAuthRequest(scopes, state, () => {});
+    RCTWeChat.sendAuthRequest(scopes, state, () => {});
     emitter.once('SendAuth.Resp', resp => {
       if (resp.errCode === 0) {
         resolve(resp);
@@ -273,7 +273,7 @@ export function pay(data) {
   if (Platform.OS === 'android') data.timeStamp = String(data.timeStamp)
 
   return new Promise((resolve, reject) => {
-    WeChat.pay(data, result => {
+    RCTWeChat.pay(data, result => {
       if (result) reject(result);
     });
     emitter.once('PayReq.Resp', resp => {
