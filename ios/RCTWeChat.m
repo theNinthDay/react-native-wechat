@@ -289,7 +289,7 @@ RCT_EXPORT_METHOD(pay:(NSDictionary *)data
             miniProgramObject.webpageUrl = aData[@"webpageUrl"];
             miniProgramObject.userName = aData[@"userName"];
             miniProgramObject.path = aData[@"path"];
-            miniProgramObject.hdImageData = aThumbImage;
+            miniProgramObject.hdImageData = UIImageJPEGRepresentation(aThumbImage, 1.0);
 
             [self shareToWeixinWithMediaMessage:aScene
                                           Title:title
